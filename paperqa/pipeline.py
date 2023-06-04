@@ -42,7 +42,7 @@ def prepare_papers(settings: QASettings):
         clean_whitespace=False,
         clean_header_footer=False,
         split_by="sentence",
-        split_length=2,
+        split_length=4,
         split_overlap=0,
         split_respect_sentence_boundary=False,
         language="en",
@@ -66,7 +66,7 @@ def update_documentstore(
     else:
         document_store = FAISSDocumentStore(
             faiss_index_factory_str="Flat",
-            embedding_dim=settings.embedding_dim,
+            embedding_dim=settings.retriever_embedding_dim,
             sql_url=f"sqlite:///{settings.faiss_db_path.as_posix()}",
         )
 

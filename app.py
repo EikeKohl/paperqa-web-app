@@ -23,12 +23,12 @@ def side_bar():
         value=0.2,
     )
 
-    st.session_state.max_tokens = st.sidebar.slider(
-        "Max Tokens", min_value=100, max_value=2000, step=100, value=500
+    st.session_state.generator_max_tokens = st.sidebar.slider(
+        "Max Tokens Answer", min_value=100, max_value=2000, step=100, value=500
     )
 
     st.session_state.num_contexts = st.sidebar.slider(
-        "Number of context matches to retrieve",
+        "Number of Context Matches",
         min_value=1,
         max_value=10,
         step=1,
@@ -50,20 +50,20 @@ def side_bar():
 
     if st.session_state.get("context"):
         st.sidebar.markdown(
-            f"""**Source:** {st.session_state.context[st.session_state.current_index][0]}  # noqa E501
+            f"""**Source:** {st.session_state.context[st.session_state.current_index][0]}
         \n\n**Score:** {st.session_state.context[st.session_state.current_index][1]}
         \n\n**Text:** {st.session_state.context[st.session_state.current_index][2]}"""
         )
 
 
-def app():
-    st.set_page_config(page_title="PaperQA", page_icon="🕵️", layout="wide")
+def app(settings):
+    st.set_page_config(page_title="PaperQA", layout="wide")
 
     st.title("PaperQA")
 
     side_bar()
 
-    settings = QASettings.parse_obj(st.session_state)
+    settings.update_from_session_state(st.session_state)
 
     params = {
         "Retriever": {"top_k": st.session_state.num_contexts},
@@ -130,4 +130,5 @@ def app():
 
 
 if __name__ == "__main__":
-    app()
+    initial_settings = QASettings.init_settings("src/config.yaml")
+    app(initial_settings)
