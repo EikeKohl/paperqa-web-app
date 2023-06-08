@@ -80,6 +80,7 @@ def app(settings):
 
     with left:
         if st.button("Add papers to database"):
+            logging.info("Adding papers to database")
             with st.spinner("✨ Updating the database..."):
                 (
                     st.session_state.document_store,
@@ -87,13 +88,19 @@ def app(settings):
                 ) = update_documentstore(papers=papers.split(","), settings=settings)
 
     with right:
-        if st.session_state.get("document_store"):
-            if st.button("Reset database"):
+        if st.button("Reset database"):
+            logging.info("Resetting database")
+            try:
                 st.session_state.document_store.delete_documents()
-                settings.faiss_index_path.unlink()
-                settings.faiss_config_path.unlink()
-                settings.faiss_db_path.unlink()
+                for file in [
+                    "faiss_index_path",
+                    "faiss_config_path",
+                    "faiss_db_path",
+                ]:
+                    settings.__getattribute__(file).unlink(missing_ok=True)
                 shutil.rmtree(settings.external_doc_dir.as_posix())
+            except (FileNotFoundError, AttributeError):
+                st.error("There is no database, yet", icon="🚨")
 
     question = st.text_area(
         "What would you like to know about the paper?",
@@ -102,6 +109,7 @@ def app(settings):
     )
 
     if st.button("Query Paper"):
+        logging.info("Querying database")
         if not st.session_state.get("retriever"):
             st.warning("Please add papers to the database first!")
 

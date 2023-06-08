@@ -12,7 +12,7 @@ def get_retriever(document_store: FAISSDocumentStore, settings: QASettings):
         document_store=document_store,
         embedding_model=settings.retriever_model,
         batch_size=32,
-        api_key=settings.openapi_key,
+        api_key=settings.openai_api_key,
         max_seq_len=1024,
     )
 
@@ -21,7 +21,7 @@ def get_qa_pipeline(
     settings: QASettings, retriever: EmbeddingRetriever
 ) -> GenerativeQAPipeline:
     generator = OpenAIAnswerGenerator(
-        api_key=settings.openapi_key,
+        api_key=settings.openai_api_key,
         model=settings.generator_model,
         temperature=settings.temperature,
         max_tokens=settings.generator_max_tokens,
@@ -42,7 +42,7 @@ def prepare_papers(settings: QASettings):
         clean_whitespace=False,
         clean_header_footer=False,
         split_by="sentence",
-        split_length=4,
+        split_length=2,
         split_overlap=0,
         split_respect_sentence_boundary=False,
         language="en",
