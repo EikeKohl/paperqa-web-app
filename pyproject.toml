@@ -9,9 +9,12 @@ readme = "README.md"
 python = "^3.10"
 openai = "^0.27.7"
 streamlit = "^1.22.0"
-cloudpathlib = "^0.14.0"
-boto3 = "^1.26.138"
-farm-haystack = {extras=["faiss,colab"], version="^1.17.0"}
+torch = "1.13.1"
+farm-haystack = {extras = ["faiss", "pdf"], version = "^1.17.1"}
+numpy = "^1.24.3"
+faiss-cpu = "1.7.2"
+sqlalchemy = "1.4.2"
+
 
 [tool.poetry.group.dev.dependencies]
 isort = "^5.12.0"
