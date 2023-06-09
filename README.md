@@ -3,7 +3,7 @@ This is an exemplary project for a Streamlit web app that runs a Haystack Questi
 for Arxiv papers using OpenAI. The purpose of this app is to demonstrate how information retrieval based on a 
 defined document database can be done. Additionally, it provides an example of how a Dockerized application can 
 be easily deployed on AWS, including authentication and a custom domain using Terraform. For business inquiries, 
-please send an email to [eike.kohlmeyer21@gmail.com](mailto:eike.kohlmeyer21@gmail.com).
+please send an email to [ekohlmeyer21@gmail.com](mailto:ekohlmeyer21@gmail.com).
 
 ![example](src/example.png)
 
