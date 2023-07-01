@@ -42,6 +42,7 @@ resource "aws_lb_listener" "paperqa_lb_listener" {
   port              = 443
   protocol          = "HTTPS"
   certificate_arn   = data.aws_acm_certificate.paperqa_cert.arn
+  //  First, the listener will direct the traffic to Cognito for authentication
   default_action {
     type  = "authenticate-cognito"
     authenticate_cognito {
@@ -51,6 +52,8 @@ resource "aws_lb_listener" "paperqa_lb_listener" {
     }
     order = 1
   }
+  //  After successful authentication, traffic will be forwarded to
+  //  the target group, i.e. the application
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.paperqa_target_group.arn
@@ -65,13 +68,17 @@ resource "aws_lb_target_group" "paperqa_target_group" {
   vpc_id      = aws_vpc.paperqa_vpc.id
   target_type = "ip"
 
+  //  The health check path for streamlit applications is /healthz.
+  //  It is important to add 304 to the matcher, because streamlit
+  //  will return the 200 status only the first time and every
+  //  subsequent call returns 304 (Not Modified)
   health_check {
     interval            = 30
     path                = "/healthz"
     timeout             = 5
     healthy_threshold   = 3
     unhealthy_threshold = 3
-    matcher = "200,304"
+    matcher             = "200,304"
   }
 
 }

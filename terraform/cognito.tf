@@ -32,6 +32,7 @@ resource "aws_cognito_user_pool" "paperqa_user_pool" {
       Your Admin
       EOT
       email_subject = "Welcome to PaperQA"
+      // Unfortunately, we have to give a sms_message template, although we don't use it
       sms_message   = "Placeholder SMS message {username} {####}"
     }
   }
@@ -57,6 +58,9 @@ resource "aws_cognito_user_pool_client" "paperqa_user_pool_client" {
   allowed_oauth_flows                  = ["code"]
   allowed_oauth_flows_user_pool_client = true
   allowed_oauth_scopes                 = ["openid"]
+  //  For the callback_urls, it is important to use your domain, as well as the load balancer,
+  //  because of the authentication workflow that will ping both these addresses
+  //  (see https://aws.amazon.com/de/blogs/containers/securing-amazon-elastic-container-service-applications-using-application-load-balancer-and-amazon-cognito/)
   callback_urls                        = [
     "https://${aws_route53_record.paperqa_domain.name}/oauth2/idpresponse",
     "https://${aws_lb.paperqa_lb.dns_name}/oauth2/idpresponse",
