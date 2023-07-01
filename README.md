@@ -111,7 +111,7 @@ See [here](https://aws.amazon.com/de/blogs/containers/securing-amazon-elastic-co
    and `IMAGE_VERSION`)
 8. To update your ECS Service, run `update_ecs.sh`
 9. Add a user to your Cognito user pool and remember to check the "Send an email invitation" check box
-   ([Documentation] (https://docs.aws.amazon.com/cognito/latest/developerguide/managing-users.html))
+   ([Documentation](https://docs.aws.amazon.com/cognito/latest/developerguide/managing-users.html))
 
 ## TODO
 
